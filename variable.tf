@@ -19,14 +19,3 @@ variable "region" {
   description = "Region of policy "
   default     = "us-central1"
 }
-
-variable "disk_type" {
-  type        = string
-  description = "The additional_disk_type of the VM."
-  default     = "pd-ssd"
-}
-variable "disk_size" {
-  type        = number
-  description = "The addtnl_disk_size of the VM."
-  default     = 10
-}
