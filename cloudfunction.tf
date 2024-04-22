@@ -1,6 +1,7 @@
 resource "google_project_service" "cf" {
-  project = var.project_id
-  service = "cloudfunctions.googleapis.com"
+  project            = var.project_id
+  service            = "cloudfunctions.googleapis.com"
+  disable_on_destroy = true
 }
 
 resource "time_sleep" "wait_30_seconds" {
