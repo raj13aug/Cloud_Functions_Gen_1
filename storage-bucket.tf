@@ -1,5 +1,5 @@
 resource "google_storage_bucket" "Cloud_function_bucket" {
-  name     = "Cloud-function-${var.project_id}"
+  name     = "cf-${var.project_id}"
   location = var.region
   project  = var.project_id
 }

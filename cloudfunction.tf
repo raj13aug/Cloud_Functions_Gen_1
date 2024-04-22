@@ -1,3 +1,13 @@
+resource "google_project_service" "cf" {
+  project = var.project_id
+  service = "cloudfunctions.googleapis.com"
+}
+
+resource "time_sleep" "wait_30_seconds" {
+  depends_on = [google_project_service.cf]
+
+  create_duration = "30s"
+}
 
 data "archive_file" "source" {
   type        = "zip"
@@ -13,7 +23,8 @@ resource "google_storage_bucket_object" "zip" {
   bucket       = google_storage_bucket.Cloud_function_bucket.name
   depends_on = [
     google_storage_bucket.Cloud_function_bucket,
-    data.archive_file.source
+    data.archive_file.source,
+    time_sleep.wait_30_seconds
   ]
 }
 
@@ -33,5 +44,6 @@ resource "google_cloudfunctions_function" "Cloud_function" {
   depends_on = [
     google_storage_bucket.Cloud_function_bucket,
     google_storage_bucket_object.zip,
+    time_sleep.wait_30_seconds,
   ]
 }
