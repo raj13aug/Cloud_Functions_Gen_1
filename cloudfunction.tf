@@ -1,7 +1,7 @@
 
 data "archive_file" "source" {
   type        = "zip"
-  source_dir  = "../src"
+  source_dir  = "${path.root}/src"
   output_path = "${path.module}/function.zip"
 }
 
