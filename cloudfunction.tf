@@ -13,7 +13,7 @@ resource "google_project_service" "cb" {
 resource "time_sleep" "wait_30_seconds" {
   depends_on = [google_project_service.cf, google_project_service.cb]
 
-  create_duration = "30s"
+  create_duration = "60s"
 }
 
 data "archive_file" "source" {
