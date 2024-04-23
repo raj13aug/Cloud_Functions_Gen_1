@@ -4,8 +4,14 @@ resource "google_project_service" "cf" {
   disable_on_destroy = true
 }
 
+resource "google_project_service" "cb" {
+  project            = var.project_id
+  service            = "cloudbuild.googleapis.com"
+  disable_on_destroy = true
+}
+
 resource "time_sleep" "wait_30_seconds" {
-  depends_on = [google_project_service.cf]
+  depends_on = [google_project_service.cf, google_project_service.cb]
 
   create_duration = "30s"
 }
@@ -14,6 +20,7 @@ data "archive_file" "source" {
   type        = "zip"
   source_dir  = "${path.root}/src"
   output_path = "${path.module}/function.zip"
+  depends_on  = [time_sleep.wait_30_seconds]
 }
 
 
@@ -25,7 +32,9 @@ resource "google_storage_bucket_object" "zip" {
   depends_on = [
     google_storage_bucket.Cloud_function_bucket,
     data.archive_file.source,
-    time_sleep.wait_30_seconds
+    time_sleep.wait_30_seconds,
+    google_project_service.cf,
+    google_project_service.cb
   ]
 }
 
@@ -46,5 +55,7 @@ resource "google_cloudfunctions_function" "Cloud_function" {
     google_storage_bucket.Cloud_function_bucket,
     google_storage_bucket_object.zip,
     time_sleep.wait_30_seconds,
+    google_project_service.cf,
+    google_project_service.cb
   ]
 }
