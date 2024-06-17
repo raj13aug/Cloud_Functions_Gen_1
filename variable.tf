@@ -3,11 +3,6 @@ variable "name" {
   default     = "cloudroot7-demo"
 }
 
-variable "id" {
-  description = "ID of a Google Cloud Project. Can be omitted and will be generated automatically"
-  default     = "mytesting-400910"
-}
-
 variable "project_id" {
   type        = string
   description = "project id"
